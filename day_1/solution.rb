@@ -21,17 +21,14 @@ class Solution
   end
 
   def solve
-    values = []
-    inputs.each do |input|
-      treated_input = treat_string(input)
-      input_array = treated_input.split("")
-      first_num = first_number(input_array)
-      last_num = last_number(input_array)
+    inputs.map { |input| extract_value(treat_string(input)) }.sum
+  end
 
-      values << "#{first_num}#{last_num}".to_i
-    end
+  private
 
-    values.sum
+  def extract_value(treated_input)
+    numbers = treated_input.split("")
+    "#{first_number(numbers)}#{last_number(numbers)}".to_i
   end
 
   def first_number(input_array)
