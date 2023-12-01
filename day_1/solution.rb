@@ -16,8 +16,20 @@
 class Solution
   attr_reader :inputs
 
+  NUM_MAP = {
+    "one" => "1",
+    "two" => "2",
+    "three" => "3",
+    "four" => "4",
+    "five" => "5",
+    "six" => "6",
+    "seven" => "7",
+    "eight" => "8",
+    "nine" => "9"
+  }.freeze
+
   def initialize(file_name)
-    @inputs = File.read(file_name).split(/\r?\n|\r/).map { |line| line }
+    @inputs = File.readlines(file_name).map(&:chomp)
   end
 
   def solve
@@ -27,39 +39,15 @@ class Solution
   private
 
   def extract_value(treated_input)
-    numbers = treated_input.split("")
-    "#{first_number(numbers)}#{last_number(numbers)}".to_i
+    numbers = treated_input.split("").select { |item| numeric? item }
+    "#{numbers.first}#{numbers.last}".to_i
   end
 
-  def first_number(input_array)
-    input_array.each do |i|
-      return i if Float(i) != nil rescue false
-    end
-  end
-
-  def last_number(input_array)
-    input_array.reverse.each do |i|
-      return i if Float(i) != nil rescue false
-    end
+  def numeric?(input)
+    Float(input) != nil rescue false
   end
 
   def treat_string(input_string)
-    num_map.each { |k, v| input_string.gsub!(/#{k}/, "#{k}#{v}#{k}") }
-
-    input_string
-  end
-
-  def num_map
-    {
-      "one" => "1",
-      "two" => "2",
-      "three" => "3",
-      "four" => "4",
-      "five" => "5",
-      "six" => "6",
-      "seven" => "7",
-      "eight" => "8",
-      "nine" => "9"
-    }
+    input_string.gsub(Regexp.union(NUM_MAP.keys), NUM_MAP)
   end
 end
