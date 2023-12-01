@@ -23,7 +23,8 @@ class Solution
   def solve
     values = []
     inputs.each do |input|
-      input_array = input.split("")
+      treated_input = treat_string(input)
+      input_array = treated_input.split("")
       first_num = first_number(input_array)
       last_num = last_number(input_array)
 
@@ -43,5 +44,25 @@ class Solution
     input_array.reverse.each do |i|
       return i if Float(i) != nil rescue false
     end
+  end
+
+  def treat_string(input_string)
+    num_map.each { |k, v| input_string.gsub!(/#{k}/, "#{k}#{v}#{k}") }
+
+    input_string
+  end
+
+  def num_map
+    {
+      "one" => "1",
+      "two" => "2",
+      "three" => "3",
+      "four" => "4",
+      "five" => "5",
+      "six" => "6",
+      "seven" => "7",
+      "eight" => "8",
+      "nine" => "9"
+    }
   end
 end
