@@ -47,7 +47,10 @@ class Solution
     Float(input) != nil rescue false
   end
 
+  # this weird gsub accounts for numbers "sharing" a letter, such as "eightwothree", where eight and two share the t
   def treat_string(input_string)
-    input_string.gsub(Regexp.union(NUM_MAP.keys), NUM_MAP)
+    NUM_MAP.each { |k, v| input_string.gsub!(/#{k}/, "#{k}#{v}#{k}") }
+
+    input_string
   end
 end
