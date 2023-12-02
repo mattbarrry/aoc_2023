@@ -33,7 +33,7 @@ class Solution
 
       sets.each do |set|
         pairs = set.split(", ")
-        pairs_hash = { "red" => 0, "green" => 0, "blue" => 0 }
+        pairs_hash = MAXIMUMS.keys.each_with_object({}) { |color, hash| hash[color] = 0 }
         pairs.each do |pair|
           num = pair.split(" ").first.to_i
           color = pair.split(" ").last
