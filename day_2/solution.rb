@@ -1,6 +1,6 @@
 class Solution
   attr_reader :inputs
-  attr_accessor :values
+  attr_accessor :values, :winning_game_sum, :powers
 
   MAXIMUMS = {
     "red" => 12,
@@ -11,11 +11,24 @@ class Solution
   def initialize(file_name)
     @inputs = File.readlines(file_name).map(&:chomp)
     @values = {}
+    @winning_game_sum = 0
+    @powers = 0
   end
 
   def solve
     extract_values
+    get_powers
     check_vals_against_maximums
+  end
+
+  def get_powers
+    values.each do |game_id, color_hash_array|
+      red = color_hash_array.map { |hash| hash["red"] }.max || 0
+      blue = color_hash_array.map { |hash| hash["blue"] }.max || 0
+      green = color_hash_array.map { |hash| hash["green"] }.max || 0
+
+      @powers += red*blue*green
+    end
   end
 
   def extract_values
@@ -50,6 +63,6 @@ class Solution
       end
     end
 
-    values.keys.map(&:to_i).sum
+    @winning_game_sum = values.keys.map(&:to_i).sum
   end
 end
