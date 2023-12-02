@@ -21,15 +21,7 @@ class Solution
     check_vals_against_maximums
   end
 
-  def get_powers
-    values.each do |game_id, color_hash_array|
-      red = color_hash_array.map { |hash| hash["red"] }.max || 0
-      blue = color_hash_array.map { |hash| hash["blue"] }.max || 0
-      green = color_hash_array.map { |hash| hash["green"] }.max || 0
-
-      @powers += red*blue*green
-    end
-  end
+  private
 
   def extract_values
     inputs.each do |line|
@@ -64,5 +56,16 @@ class Solution
     end
 
     @winning_game_sum = values.keys.map(&:to_i).sum
+  end
+
+  def get_powers
+    values.each do |game_id, color_hash_array|
+      @powers += calculate_power(color_hash_array)
+    end
+  end
+
+  def calculate_power(array)
+    colors = MAXIMUMS.keys
+    colors.map { |color| array.map { |hash| hash[color] }.max || 0 }.reduce(:*)
   end
 end
